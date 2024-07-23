@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import studio.stew.common.BaseEntity;
 import studio.stew.domain.enums.Gender;
-import studio.stew.domain.mapping.WishTutor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +26,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Long age;
     @Column(nullable = false)
-    private String city;
-    @Column(nullable = false)
-    private String area;
+    private String location;
     private String imgUrl;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<WishTutor> wishTutorList = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Tutor> tutorList = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -3,7 +3,7 @@ package studio.stew.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import studio.stew.common.BaseEntity;
-import studio.stew.domain.mapping.WishTutor;
+import studio.stew.domain.enums.Gender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +18,25 @@ public class Tutor extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tutor_id")
     private Long tutorId;
-    @Column(nullable = false)
-    private String title;
-    @Column(nullable = false)
-    private String city;
-    @Column(nullable = false)
-    private String area;
     private String imgUrl;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private Gender gender;
+    @Column(nullable = false)
+    private int age;
+    @Column(nullable = false)
+    private String location;
+    @Column(nullable = false)
+    private Long price;
+    @Column(nullable = false)
+    private String career;
     @Column(nullable = false)
     private String intro;
     @Column(nullable = false)
-    private String style;
-    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
-    private List<WishTutor> wishTutorList = new ArrayList<>();
+    private String self_intro;
+    @Column(nullable = false)
+    private String sports_intro;
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
     private List<Application> applicationList = new ArrayList<>();
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
