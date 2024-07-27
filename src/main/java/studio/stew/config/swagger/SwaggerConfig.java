@@ -1,4 +1,4 @@
-package studio.stew.config;
+package studio.stew.config.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
