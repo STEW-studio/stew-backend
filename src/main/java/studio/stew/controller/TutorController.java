@@ -38,4 +38,10 @@ public class TutorController {
         TutorResponseDto.TutorUpdateResponseDto responseDto = TutorConverter.toTutorUpdateResponseDto(tutorId);
         return DataResponseDto.of(responseDto, "튜터가 수정되었습니다.");
     }
+
+    @DeleteMapping(value = "/{tutorId}")
+    public DataResponseDto deleteTutor(@PathVariable(name="tutorId") Long tutorId) {
+        tutorService.deleteTutor(tutorId);
+        return DataResponseDto.of(null,"튜터가 삭제되었습니다");
+    }
 }
