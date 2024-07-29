@@ -11,10 +11,7 @@ import studio.stew.domain.Sports;
 import studio.stew.domain.Tutor;
 import studio.stew.domain.User;
 import studio.stew.dto.TutorRequestDto;
-import studio.stew.repository.PortfolioRepository;
-import studio.stew.repository.SportsRepository;
-import studio.stew.repository.TutorRepository;
-import studio.stew.repository.UserRepository;
+import studio.stew.repository.*;
 
 import java.util.List;
 
