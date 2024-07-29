@@ -15,7 +15,7 @@ public class TutorRequestDto {
         @NotNull
         Gender gender;
         @NotNull
-        int age;
+        Integer age;
         @NotNull
         String location;
         @NotNull
