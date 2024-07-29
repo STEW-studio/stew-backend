@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Setter
 public class Tutor extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,7 @@ public class Tutor extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(nullable = false)
-    private int age;
+    private Integer age;
     @Column(nullable = false)
     private String location;
     @Column(nullable = false)

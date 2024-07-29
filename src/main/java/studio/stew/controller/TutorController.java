@@ -28,5 +28,14 @@ public class TutorController {
         TutorResponseDto.TutorCreateResponseDto responseDto = TutorConverter.toTutorCreateResponseDto(tutorId);
         return DataResponseDto.of(responseDto, "튜터가 생성되었습니다.");
     }
-
+    @PatchMapping(value = "/{tutorId}", consumes = "multipart/form-data")
+    public DataResponseDto<TutorResponseDto.TutorUpdateResponseDto> updateTutor(
+            @RequestPart TutorRequestDto.TutorUpdateRequestDto requestDto,
+            @RequestPart(required = false)List<MultipartFile> newPortfolio,
+            @PathVariable(name="tutorId") Long tutorId,
+            @RequestPart(required = false)MultipartFile newProfile) {
+        Long updatedTutorId = tutorService.updateTutor(tutorId, requestDto, newPortfolio, newProfile);
+        TutorResponseDto.TutorUpdateResponseDto responseDto = TutorConverter.toTutorUpdateResponseDto(tutorId);
+        return DataResponseDto.of(responseDto, "튜터가 수정되었습니다.");
+    }
 }
