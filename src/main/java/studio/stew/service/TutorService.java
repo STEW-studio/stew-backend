@@ -31,6 +31,10 @@ public class TutorService {
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. ID: " + userId));
         Sports sports = sportsRepository.findById(requestDto.getSportsId())
                 .orElseThrow(()-> new EntityNotFoundException("종목을 찾을 수 없습니다."));
+        String profileUrl = null;
+        if (profile != null && !profile.isEmpty()) {
+            profileUrl = awsS3Service.uploadFile(profile);
+        }
         Tutor tutor = TutorConverter.toTutor(user, requestDto, sports, profileUrl);
         Tutor newTutor = tutorRepository.save(tutor);
 
