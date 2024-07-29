@@ -42,6 +42,6 @@ public class TutorController {
     @DeleteMapping(value = "/{tutorId}")
     public DataResponseDto deleteTutor(@PathVariable(name="tutorId") Long tutorId) {
         tutorService.deleteTutor(tutorId);
-        return DataResponseDto.of(null,"튜터가 삭제되었습니다");
+        return DataResponseDto.of(null,"tutor_id: "+tutorId+" 튜터가 삭제되었습니다");
     }
 }
