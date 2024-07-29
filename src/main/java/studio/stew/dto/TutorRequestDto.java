@@ -15,7 +15,7 @@ public class TutorRequestDto {
         @NotNull
         Gender gender;
         @NotNull
-        int age;
+        Integer age;
         @NotNull
         String location;
         @NotNull
@@ -34,6 +34,28 @@ public class TutorRequestDto {
         @JsonProperty("sports_intro")
         String sportsIntro;
 
+    }
+    @Getter
+    public static class TutorUpdateRequestDto {
+        String name;
+        Gender gender;
+        Integer age;
+        String location;
+
+        @JsonProperty("sports_id")
+        Long sportsId;
+
+        Long price;
+
+        String career;
+
+        String intro;
+
+        @JsonProperty("self_intro")
+        String selfIntro;
+
+        @JsonProperty("sports_intro")
+        String sportsIntro;
     }
 }
 

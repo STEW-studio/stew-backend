@@ -18,16 +18,24 @@ import java.util.List;
 public class TutorController {
     private final TutorService tutorService;
     private final AwsS3Service awsS3Service;
-    @PostMapping(consumes = "multipart/form-data")
+    @PostMapping(value = "/{userId}", consumes = "multipart/form-data")
     public DataResponseDto<TutorResponseDto.TutorCreateResponseDto> createTutor(
             @RequestPart TutorRequestDto.TutorCreateRequestDto requestDto,
             @RequestPart(required = false)List<MultipartFile> portfolio,
-            @RequestParam(name="userId") Long userId,
+            @PathVariable(name="userId") Long userId,
             @RequestPart(required = false)MultipartFile profile) {
-        String imgUrl = awsS3Service.uploadFile(profile);
-        Long tutorId = tutorService.createTutor(userId, requestDto, portfolio, imgUrl);
+        Long tutorId = tutorService.createTutor(userId, requestDto, portfolio, profile);
         TutorResponseDto.TutorCreateResponseDto responseDto = TutorConverter.toTutorCreateResponseDto(tutorId);
         return DataResponseDto.of(responseDto, "튜터가 생성되었습니다.");
     }
-
+    @PatchMapping(value = "/{tutorId}", consumes = "multipart/form-data")
+    public DataResponseDto<TutorResponseDto.TutorUpdateResponseDto> updateTutor(
+            @RequestPart TutorRequestDto.TutorUpdateRequestDto requestDto,
+            @RequestPart(required = false)List<MultipartFile> newPortfolio,
+            @PathVariable(name="tutorId") Long tutorId,
+            @RequestPart(required = false)MultipartFile newProfile) {
+        Long updatedTutorId = tutorService.updateTutor(tutorId, requestDto, newPortfolio, newProfile);
+        TutorResponseDto.TutorUpdateResponseDto responseDto = TutorConverter.toTutorUpdateResponseDto(tutorId);
+        return DataResponseDto.of(responseDto, "튜터가 수정되었습니다.");
+    }
 }

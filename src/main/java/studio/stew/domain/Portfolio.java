@@ -17,5 +17,6 @@ public class Portfolio {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
+    private String filename;
 
 }

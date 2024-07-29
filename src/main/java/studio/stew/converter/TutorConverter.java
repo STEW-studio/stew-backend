@@ -6,6 +6,8 @@ import studio.stew.domain.User;
 import studio.stew.dto.TutorRequestDto;
 import studio.stew.dto.TutorResponseDto;
 
+import java.time.LocalDateTime;
+
 public class TutorConverter {
     public static Tutor toTutor(User user, TutorRequestDto.TutorCreateRequestDto requestDto, Sports sports, String imgUrl) {
         return Tutor.builder()
@@ -27,6 +29,12 @@ public class TutorConverter {
     public static TutorResponseDto.TutorCreateResponseDto toTutorCreateResponseDto(Long tutorId) {
         return TutorResponseDto.TutorCreateResponseDto.builder()
                 .tutorId(tutorId)
+                .build();
+    }
+    public static TutorResponseDto.TutorUpdateResponseDto toTutorUpdateResponseDto(Long tutorId) {
+        return TutorResponseDto.TutorUpdateResponseDto.builder()
+                .tutorId(tutorId)
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }
