@@ -91,5 +91,10 @@ public class TutorService {
             portfolioRepository.save(portfolioImg);
         }
     }
+    public void deleteTutor(Long tutorId) {
+        Tutor tutor = tutorRepository.findById(tutorId)
+                .orElseThrow(() -> new EntityNotFoundException("튜터가 없습니다."));
+        tutorRepository.delete(tutor);
+    }
 }
 
