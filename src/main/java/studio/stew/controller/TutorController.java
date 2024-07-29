@@ -24,8 +24,7 @@ public class TutorController {
             @RequestPart(required = false)List<MultipartFile> portfolio,
             @PathVariable(name="userId") Long userId,
             @RequestPart(required = false)MultipartFile profile) {
-        String imgUrl = awsS3Service.uploadFile(profile);
-        Long tutorId = tutorService.createTutor(userId, requestDto, portfolio, imgUrl);
+        Long tutorId = tutorService.createTutor(userId, requestDto, portfolio, profile);
         TutorResponseDto.TutorCreateResponseDto responseDto = TutorConverter.toTutorCreateResponseDto(tutorId);
         return DataResponseDto.of(responseDto, "튜터가 생성되었습니다.");
     }
