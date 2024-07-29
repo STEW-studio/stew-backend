@@ -18,11 +18,11 @@ import java.util.List;
 public class TutorController {
     private final TutorService tutorService;
     private final AwsS3Service awsS3Service;
-    @PostMapping(consumes = "multipart/form-data")
+    @PostMapping(value = "/{userId}", consumes = "multipart/form-data")
     public DataResponseDto<TutorResponseDto.TutorCreateResponseDto> createTutor(
             @RequestPart TutorRequestDto.TutorCreateRequestDto requestDto,
             @RequestPart(required = false)List<MultipartFile> portfolio,
-            @RequestParam(name="userId") Long userId,
+            @PathVariable(name="userId") Long userId,
             @RequestPart(required = false)MultipartFile profile) {
         String imgUrl = awsS3Service.uploadFile(profile);
         Long tutorId = tutorService.createTutor(userId, requestDto, portfolio, imgUrl);
