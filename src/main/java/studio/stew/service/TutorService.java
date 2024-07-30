@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import studio.stew.aws.AwsS3Service;
 import studio.stew.converter.TutorConverter;
-import studio.stew.domain.Portfolio;
-import studio.stew.domain.Sports;
-import studio.stew.domain.Tutor;
-import studio.stew.domain.User;
+import studio.stew.domain.*;
 import studio.stew.dto.TutorRequestDto;
+import studio.stew.dto.TutorResponseDto;
 import studio.stew.repository.*;
 
 import java.util.List;
@@ -23,6 +21,7 @@ public class TutorService {
     private final TutorRepository tutorRepository;
     private final AwsS3Service awsS3Service;
     private final PortfolioRepository portfolioRepository;
+    private final ReviewRepository reviewRepository;
     public Long createTutor(Long userId, TutorRequestDto.TutorCreateRequestDto requestDto, List<MultipartFile> portfolio, MultipartFile profile) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. ID: " + userId));
@@ -92,6 +91,30 @@ public class TutorService {
         Tutor tutor = tutorRepository.findById(tutorId)
                 .orElseThrow(() -> new EntityNotFoundException("튜터가 없습니다."));
         tutorRepository.delete(tutor);
+    }
+    public TutorResponseDto.TutorDetailDto getTutorDetail(Long tutorId) {
+        Tutor tutor = tutorRepository.findById(tutorId)
+                .orElseThrow(() -> new EntityNotFoundException("튜터가 없습니다."));
+        List<String> portfolio = portfolioRepository.findAllImgUrlByTutor(tutor);
+        Review review = reviewRepository.findTopByTutorOrderByCreatedAtDesc(tutor);
+        User reviewer = userRepository.findById(review.getUser().getUserId())
+                .orElseThrow(()->new EntityNotFoundException("유저가 없습니다."));
+        TutorResponseDto.TutorReviewDto reviewDto = TutorConverter.toTutorReviewDto(reviewer, review);
+        Float totalScore = calculateScore(tutor);
+        Integer reviewCount = countReviews(tutor);
+        TutorResponseDto.TutorDetailDto response = TutorConverter.toTutorDetailDto(tutor, portfolio, reviewDto, totalScore, reviewCount);
+        return response;
+    }
+    public Float calculateScore (Tutor tutor) {
+        Float totalScore = 0.0f;
+        if(reviewRepository.countAllByTutor(tutor) != 0){
+            totalScore = reviewRepository.sumAllScoreByTutor(tutor.getTutorId());
+        }
+        return totalScore/countReviews(tutor);
+    }
+    public Integer countReviews (Tutor tutor) {
+        Integer countReviews = reviewRepository.countAllByTutor(tutor);
+        return countReviews;
     }
 }
 

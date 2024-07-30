@@ -3,12 +3,14 @@ package studio.stew.converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import studio.stew.domain.Review;
 import studio.stew.domain.Sports;
 import studio.stew.domain.Tutor;
 import studio.stew.domain.User;
 import studio.stew.dto.TutorRequestDto;
 import studio.stew.dto.TutorResponseDto;
 import studio.stew.repository.ReviewRepository;
+import studio.stew.service.TutorService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TutorConverter {
     private final ReviewRepository reviewRepository;
+    private final TutorService tutorService;
     public static Tutor toTutor(User user, TutorRequestDto.TutorCreateRequestDto requestDto, Sports sports, String imgUrl) {
         return Tutor.builder()
                 .price(requestDto.getPrice())
@@ -45,7 +48,7 @@ public class TutorConverter {
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
-    public TutorResponseDto.TutorPreviewDto toTutorPreviewDto(Float score, Integer reviewCount, Tutor tutor) {
+    public static TutorResponseDto.TutorPreviewDto toTutorPreviewDto(Float score, Integer reviewCount, Tutor tutor) {
         return TutorResponseDto.TutorPreviewDto.builder()
                 .price(tutor.getPrice())
                 .intro(tutor.getIntro())
@@ -74,6 +77,40 @@ public class TutorConverter {
                 .totalElements(tutorList.getTotalElements())
                 .totalPage(tutorList.getTotalPages())
                 .listSize(tutorList.getSize())
+                .build();
+    }
+    public static TutorResponseDto.TutorDetailDto toTutorDetailDto
+            (Tutor tutor,
+             List<String> portfolio,
+             TutorResponseDto.TutorReviewDto reviewDto,
+             Float totalScore,
+             Integer reviewCount) {
+        return TutorResponseDto.TutorDetailDto.builder()
+                .age(tutor.getAge())
+                .career(tutor.getCareer())
+                .portfolio(portfolio)
+                .intro(tutor.getIntro())
+                .price(tutor.getPrice())
+                .imgUrl(tutor.getImgUrl())
+                .location(tutor.getLocation())
+                .selfIntro(tutor.getSelf_intro())
+                .sportsId(tutor.getSports().getSportsId())
+                .gender(tutor.getGender())
+                .name(tutor.getName())
+                .sportsIntro(tutor.getSports_intro())
+                .totalScore(totalScore)
+                .reviewCount(reviewCount)
+                .reviewDto(reviewDto)
+                .build();
+    }
+    public static TutorResponseDto.TutorReviewDto toTutorReviewDto(User reviewer, Review review) {
+        return TutorResponseDto.TutorReviewDto.builder()
+                .reviewAge(reviewer.getAge())
+                .reviewContent(review.getContents())
+                .reviewer(reviewer.getName())
+                .reviewLocation(reviewer.getLocation())
+                .reviewProfile(reviewer.getImgUrl())
+                .reviewScore(review.getScore())
                 .build();
     }
     public Float calculateScore (Tutor tutor) {
