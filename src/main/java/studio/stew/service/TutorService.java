@@ -2,6 +2,7 @@ package studio.stew.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -116,6 +117,10 @@ public class TutorService {
             result.add(TutorConverter.toTodayTutorDto(tutor));
         }
         return result;
+    }
+    public Page<Tutor> getAllTutorList(Integer page) {
+        Page<Tutor> TutorPage = tutorRepository.findAll(PageRequest.of(page, 9));
+        return TutorPage;
     }
     public Float calculateScore (Tutor tutor) {
         Float totalScore = 0.0f;
