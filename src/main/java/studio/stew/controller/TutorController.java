@@ -44,4 +44,9 @@ public class TutorController {
         tutorService.deleteTutor(tutorId);
         return DataResponseDto.of(null,"tutor_id: "+tutorId+" 튜터가 삭제되었습니다");
     }
+    @GetMapping(value="/{tutorId}")
+    public DataResponseDto<TutorResponseDto.TutorDetailDto> getTutorDetail(@PathVariable Long tutorId) {
+        TutorResponseDto.TutorDetailDto response = tutorService.getTutorDetail(tutorId);
+        return DataResponseDto.of(response,"튜터 상세보기를 완료했습니다.");
+    }
 }

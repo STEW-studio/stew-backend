@@ -10,4 +10,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Integer countAllByTutor(Tutor tutor);
     @Query("select SUM(r.score) from Review r where r.tutor.tutorId = :tutorId")
     Float sumAllScoreByTutor(@Param("tutorId") Long tutorId);
+    Review findTopByTutorOrderByCreatedAtDesc(Tutor tutor);
 }
