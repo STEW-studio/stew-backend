@@ -67,4 +67,8 @@ public class ApplicationService {
     public void delete(Application application){
         this.applicationRepository.delete(application);
     }
+
+    public List<Tutor> getTutorsWithApplications(Long userId) {
+        return tutorRepository.findTutorsWithApplicationsByUser(userId);
+    }
 }

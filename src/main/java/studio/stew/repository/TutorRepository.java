@@ -11,4 +11,5 @@ import java.util.List;
 public interface TutorRepository extends JpaRepository<Tutor, Long> {
     List<Tutor> findByUser(User user);
     Page<Tutor> findByUser(User user, Pageable pageable);
+    List<Tutor> findTutorsWithApplicationsByUser(Long userId);
 }
