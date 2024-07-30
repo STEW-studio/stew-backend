@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import studio.stew.aws.AwsS3Service;
 import studio.stew.converter.TutorConverter;
 import studio.stew.domain.Tutor;
+import studio.stew.domain.enums.Gender;
 import studio.stew.dto.TutorRequestDto;
 import studio.stew.dto.TutorResponseDto;
 import studio.stew.response.DataResponseDto;
@@ -62,10 +63,22 @@ public class TutorController {
     @Operation(summary = "전체 튜터 조회 API",description = "전체 튜터 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
     @GetMapping
     @Parameters({
-            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다."),
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지"),
+            @Parameter(name = "sportsId", description = "필터를 적용할 종목의 id"),
+            @Parameter(name = "area", description = "필터를 적용할 지역, 키워드가 지역의 일부분이라도 포함되면 필터가 적용됩니다."),
+            @Parameter(name = "minPrice", description = "가격 필터의 하한가"),
+            @Parameter(name = "maxPrice", description = "가격 필터의 상한가"),
+            @Parameter(name = "gender", description = "필터를 적용할 성별, 남성/여성 중 입력해주세요."),
     })
-    public DataResponseDto<TutorResponseDto.TutorPreviewListDto> getAllTutorList(@RequestParam(name = "page") Integer page) {
-        Page<Tutor> response = tutorService.getAllTutorList(page-1);
+    public DataResponseDto<TutorResponseDto.TutorPreviewListDto> getAllTutorList(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(required = false) Long sportsId,
+            @RequestParam(required = false) String area,
+            @RequestParam(required = false) Long minPrice,
+            @RequestParam(required = false) Long maxPrice,
+            @RequestParam(required = false) String gender) {
+        Gender enumGender = Gender.toGender(gender);
+        Page<Tutor> response = tutorService.getTutorList(page-1,sportsId,area,minPrice,maxPrice,enumGender);
         return DataResponseDto.of(tutorConverter.toTutorPreviewListDto(response),"전체 튜터 목록을 조회했습니다.");
     }
 }
