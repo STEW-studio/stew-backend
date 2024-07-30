@@ -99,4 +99,18 @@ public class TutorResponseDto {
         @JsonProperty("reviewer_age")
         Long reviewAge;
     }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TodayTutorDto {
+        Long tutorId;
+        String imgUrl;
+        String name;
+        String sportName;
+        String location;
+        String career;
+        String intro;
+        Long price;
+    }
 }

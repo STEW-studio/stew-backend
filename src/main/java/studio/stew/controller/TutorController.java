@@ -49,4 +49,8 @@ public class TutorController {
         TutorResponseDto.TutorDetailDto response = tutorService.getTutorDetail(tutorId);
         return DataResponseDto.of(response,"튜터 상세보기를 완료했습니다.");
     }
+    @GetMapping(value="/today-tutor")
+    public DataResponseDto<List<TutorResponseDto.TodayTutorDto>> getTodayTutors() {
+        return DataResponseDto.of(tutorService.todayTutorService(),"오늘의 튜터를 조회했습니다.");
+    }
 }

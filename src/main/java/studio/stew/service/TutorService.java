@@ -2,6 +2,7 @@ package studio.stew.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import studio.stew.aws.AwsS3Service;
@@ -11,6 +12,7 @@ import studio.stew.dto.TutorRequestDto;
 import studio.stew.dto.TutorResponseDto;
 import studio.stew.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,7 +35,9 @@ public class TutorService {
         }
         Tutor tutor = TutorConverter.toTutor(user, requestDto, sports, profileUrl);
         Tutor newTutor = tutorRepository.save(tutor);
-        uploadPortfolio(portfolio, newTutor, false);
+        if (portfolio != null && !portfolio.isEmpty()) {
+            uploadPortfolio(portfolio, newTutor, false);
+        }
 
         return newTutor.getTutorId();
     }
@@ -104,6 +108,14 @@ public class TutorService {
         Integer reviewCount = countReviews(tutor);
         TutorResponseDto.TutorDetailDto response = TutorConverter.toTutorDetailDto(tutor, portfolio, reviewDto, totalScore, reviewCount);
         return response;
+    }
+    public List<TutorResponseDto.TodayTutorDto> todayTutorService() {
+        List<Tutor> todayTutorList = tutorRepository.findTodayTutors(PageRequest.of(0,4));
+        List<TutorResponseDto.TodayTutorDto> result = new ArrayList<>();
+        for(Tutor tutor : todayTutorList) {
+            result.add(TutorConverter.toTodayTutorDto(tutor));
+        }
+        return result;
     }
     public Float calculateScore (Tutor tutor) {
         Float totalScore = 0.0f;
