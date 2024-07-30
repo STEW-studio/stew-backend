@@ -4,11 +4,13 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import studio.stew.aws.AwsS3Service;
 import studio.stew.converter.TutorConverter;
 import studio.stew.domain.*;
+import studio.stew.domain.enums.Gender;
 import studio.stew.dto.TutorRequestDto;
 import studio.stew.dto.TutorResponseDto;
 import studio.stew.repository.*;
@@ -118,9 +120,33 @@ public class TutorService {
         }
         return result;
     }
-    public Page<Tutor> getAllTutorList(Integer page) {
-        Page<Tutor> TutorPage = tutorRepository.findAll(PageRequest.of(page, 9));
-        return TutorPage;
+    public Page<Tutor> getTutorList(Integer page, Long sportsId, String area, Long minPrice, Long maxPrice, Gender gender) {
+        Specification<Tutor> spec = Specification.where(null);
+        //필터링
+
+        //종목 필터링
+        if (sportsId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("sports").get("id"), sportsId));
+        }
+        //지역 필터링
+        if (area != null && !area.isEmpty()) {
+            spec = spec.and((root, query, cb) -> cb.like(root.get("location"), "%" + area + "%"));
+        }
+        //가격 필터링
+        if (minPrice != null && maxPrice != null) {
+            spec = spec.and((root, query, cb) -> cb.between(root.get("price"), minPrice, maxPrice));
+        }
+        else if (minPrice != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), minPrice));
+        }
+        else if (maxPrice != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), maxPrice));
+        }
+        //성별 필터링
+        if (gender != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("gender"), gender));
+        }
+        return tutorRepository.findAll(spec, PageRequest.of(page, 9));
     }
     public Float calculateScore (Tutor tutor) {
         Float totalScore = 0.0f;
