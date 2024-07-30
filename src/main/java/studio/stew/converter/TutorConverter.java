@@ -113,6 +113,18 @@ public class TutorConverter {
                 .reviewScore(review.getScore())
                 .build();
     }
+    public static TutorResponseDto.TodayTutorDto toTodayTutorDto(Tutor tutor) {
+        return TutorResponseDto.TodayTutorDto.builder()
+                .sportName(tutor.getSports().getName())
+                .tutorId(tutor.getTutorId())
+                .price(tutor.getPrice())
+                .career(tutor.getCareer())
+                .imgUrl(tutor.getImgUrl())
+                .intro(tutor.getIntro())
+                .location(tutor.getLocation())
+                .name(tutor.getName())
+                .build();
+    }
     public Float calculateScore (Tutor tutor) {
         Float totalScore = 0.0f;
         if(reviewRepository.countAllByTutor(tutor) != 0){
