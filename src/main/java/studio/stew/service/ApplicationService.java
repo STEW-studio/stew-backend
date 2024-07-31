@@ -16,9 +16,6 @@ import studio.stew.repository.ApplicationRepository;
 import studio.stew.repository.TutorRepository;
 import studio.stew.repository.UserRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

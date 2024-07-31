@@ -6,7 +6,6 @@ import studio.stew.common.BaseEntity;
 
 import java.util.List;
 
-@Table(name = "application")
 @Entity
 @Getter
 @Builder
