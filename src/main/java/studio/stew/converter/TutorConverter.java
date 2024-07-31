@@ -10,7 +10,6 @@ import studio.stew.domain.User;
 import studio.stew.dto.TutorRequestDto;
 import studio.stew.dto.TutorResponseDto;
 import studio.stew.repository.ReviewRepository;
-import studio.stew.service.TutorService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TutorConverter {
     private final ReviewRepository reviewRepository;
-    private final TutorService tutorService;
     public static Tutor toTutor(User user, TutorRequestDto.TutorCreateRequestDto requestDto, Sports sports, String imgUrl) {
         return Tutor.builder()
                 .price(requestDto.getPrice())
@@ -135,5 +133,22 @@ public class TutorConverter {
     public Integer countReviews (Tutor tutor) {
         Integer countReviews = reviewRepository.countAllByTutor(tutor);
         return countReviews;
+    }
+
+    public TutorResponseDto.TutorPreviewDto toTutorResponseDto(Tutor tutor) {
+        Float score = calculateScore(tutor);
+        Integer reviewCount = countReviews(tutor);
+
+        return TutorResponseDto.TutorPreviewDto.builder()
+                .imgUrl(tutor.getImgUrl())
+                .name(tutor.getName())
+                .sportName(tutor.getSports().getName())
+                .location(tutor.getLocation())
+                .career(tutor.getCareer())
+                .intro(tutor.getIntro())
+                .score(score)
+                .reviewCount(reviewCount)
+                .price(tutor.getPrice())
+                .build();
     }
 }
