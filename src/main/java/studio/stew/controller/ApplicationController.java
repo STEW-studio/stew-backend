@@ -26,12 +26,13 @@ public class ApplicationController {
     private final ApplicationService applicationService;
     private final AwsS3Service awsS3Service;
 
-    @PostMapping(value = "/apps/{userId}", consumes = "multipart/form-data")
+    @PostMapping(value = "/apps/{userId}/{tutorId}", consumes = "multipart/form-data")
     public DataResponseDto<ApplicationResponseDto.ApplicationCreateResponseDto> applicationCreate(
             @PathVariable Long userId,
+            @PathVariable Long tutorId,
             @ModelAttribute @Valid ApplicationRequestDto.ApplicationCreateRequestDto applicationCreateRequestDto) {
 
-        Application application = applicationService.createApplication(applicationCreateRequestDto);
+        Application application = applicationService.createApplication(applicationCreateRequestDto, userId, tutorId);
         Long applicationId = application.getApplicationId();
 
         ApplicationResponseDto.ApplicationCreateResponseDto responseDto = ApplicationConverter.toApplicationCreateResponseDto(applicationId);

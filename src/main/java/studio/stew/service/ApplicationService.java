@@ -29,8 +29,12 @@ public class ApplicationService {
     private final UserRepository userRepository;
     private final AwsS3Service awsS3Service;
 
-    public Application createApplication(ApplicationRequestDto.ApplicationCreateRequestDto requestDto) {
+    public Application createApplication(ApplicationRequestDto.ApplicationCreateRequestDto requestDto, Long userId, Long tutorId) {
         String imgUrl = awsS3Service.uploadFile(requestDto.getImgUrl());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. ID: " + userId));
+        Tutor tutor = tutorRepository.findById(tutorId)
+                .orElseThrow(() -> new EntityNotFoundException("튜터를 찾을 수 없습니다. ID: " + tutorId));
 
         Application application = Application.builder()
                 .title(requestDto.getTitle())
@@ -39,6 +43,8 @@ public class ApplicationService {
                 .intensity(requestDto.getIntensity())
                 .memo(requestDto.getMemo())
                 .status(false)
+                .tutor(tutor)
+                .user(user)
                 .build();
 
         return applicationRepository.save(application);

@@ -22,7 +22,7 @@ public class SportsController {
 
     @GetMapping
     public DataResponseDto<SportsResponseDto.SportsNameIdResponseListDto> sportsSearch(
-            @RequestParam String kw){
+            @RequestParam(name = "kw") String kw){
         List<Sports> searchedList = sportsService.getList(kw);
         SportsResponseDto.SportsNameIdResponseListDto responseDto = SportsConverter.toSportsNameIdResponseListDto(searchedList);
 
