@@ -25,6 +25,7 @@ public class TutorController {
     private final TutorService tutorService;
     private final AwsS3Service awsS3Service;
     private final TutorConverter tutorConverter;
+    @Operation(summary = "튜터 등록",description = "튜터를 등록하는 API입니다. path variable로 userId를 주세요.")
     @PostMapping(value = "/{userId}", consumes = "multipart/form-data")
     public DataResponseDto<TutorResponseDto.TutorCreateResponseDto> createTutor(
             @RequestPart TutorRequestDto.TutorCreateRequestDto requestDto,
@@ -35,6 +36,7 @@ public class TutorController {
         TutorResponseDto.TutorCreateResponseDto responseDto = TutorConverter.toTutorCreateResponseDto(tutorId);
         return DataResponseDto.of(responseDto, "튜터가 생성되었습니다.");
     }
+    @Operation(summary = "튜터 수정",description = "튜터 정보를 수정하는 API입니다. path variable로 tutorId를 주세요.")
     @PatchMapping(value = "/{tutorId}", consumes = "multipart/form-data")
     public DataResponseDto<TutorResponseDto.TutorUpdateResponseDto> updateTutor(
             @RequestPart TutorRequestDto.TutorUpdateRequestDto requestDto,
@@ -47,20 +49,23 @@ public class TutorController {
     }
 
     @DeleteMapping(value = "/{tutorId}")
+    @Operation(summary = "튜터 삭제",description = "튜터를 삭제하는 API입니다. path variable로 tutorId를 주세요.")
     public DataResponseDto deleteTutor(@PathVariable(name="tutorId") Long tutorId) {
         tutorService.deleteTutor(tutorId);
         return DataResponseDto.of(null,"tutor_id: "+tutorId+" 튜터가 삭제되었습니다");
     }
+    @Operation(summary = "튜터 상세보기",description = "튜터 상세보기 API입니다. path variable로 tutorId를 주세요.")
     @GetMapping(value="/{tutorId}")
     public DataResponseDto<TutorResponseDto.TutorDetailDto> getTutorDetail(@PathVariable Long tutorId) {
         TutorResponseDto.TutorDetailDto response = tutorService.getTutorDetail(tutorId);
         return DataResponseDto.of(response,"튜터 상세보기를 완료했습니다.");
     }
+    @Operation(summary = "오늘의 튜터",description = "오늘 신청서가 많은 상위 4개의 튜터를 추천하는 API입니다.")
     @GetMapping(value="/today-tutor")
     public DataResponseDto<List<TutorResponseDto.TodayTutorDto>> getTodayTutors() {
         return DataResponseDto.of(tutorService.todayTutorService(),"오늘의 튜터를 조회했습니다.");
     }
-    @Operation(summary = "튜터 둘러보기",description = "전체 튜터 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
+    @Operation(summary = "튜터 둘러보기",description = "전체 튜터 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호, 필터, 정렬기준을 입력해주세요.")
     @GetMapping
     @Parameters({
             @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지"),
