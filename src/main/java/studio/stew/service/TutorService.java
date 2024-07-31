@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -120,10 +121,9 @@ public class TutorService {
         }
         return result;
     }
-    public Page<Tutor> getTutorList(Integer page, Long sportsId, String area, Long minPrice, Long maxPrice, Gender gender) {
+    public Page<Tutor> getTutorList(Integer page, Long sportsId, String area, Long minPrice, Long maxPrice, Gender gender, String sortOption) {
         Specification<Tutor> spec = Specification.where(null);
         //필터링
-
         //종목 필터링
         if (sportsId != null) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("sports").get("id"), sportsId));
@@ -143,17 +143,43 @@ public class TutorService {
             spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), maxPrice));
         }
         //성별 필터링
-        if (gender != null) {
+        if (gender != null)  {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("gender"), gender));
         }
-        return tutorRepository.findAll(spec, PageRequest.of(page, 9));
+
+        //평점순 정렬을 위한 튜터별 평점 계산
+        List<Tutor> allTutors = tutorRepository.findAll();
+        for(Tutor tutor : allTutors) {
+            Float score = calculateScore(tutor);
+            tutor.setScore(score);
+        }
+        tutorRepository.saveAll(allTutors);
+
+        //정렬
+        //default: 최신순 정렬
+        Sort sort = Sort.by(Sort.Direction.DESC,"createdAt");;
+        if(sortOption != null) {
+            if(sortOption.equals("가격순")) {
+                sort = Sort.by(Sort.Direction.DESC, "price");
+            }
+            else if(sortOption.equals("평점순")) {
+                sort = Sort.by(Sort.Direction.DESC, "score");
+            }
+        }
+        return tutorRepository.findAll(spec, PageRequest.of(page, 9,sort));
     }
     public Float calculateScore (Tutor tutor) {
         Float totalScore = 0.0f;
         if(reviewRepository.countAllByTutor(tutor) != 0){
             totalScore = reviewRepository.sumAllScoreByTutor(tutor.getTutorId());
         }
-        return totalScore/countReviews(tutor);
+        Integer reviewCount = countReviews(tutor);
+        if(reviewCount == 0) {
+            return 0.0f;
+        }
+        else {
+            return totalScore/countReviews(tutor);
+        }
     }
     public Integer countReviews (Tutor tutor) {
         Integer countReviews = reviewRepository.countAllByTutor(tutor);

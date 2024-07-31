@@ -60,7 +60,7 @@ public class TutorController {
     public DataResponseDto<List<TutorResponseDto.TodayTutorDto>> getTodayTutors() {
         return DataResponseDto.of(tutorService.todayTutorService(),"오늘의 튜터를 조회했습니다.");
     }
-    @Operation(summary = "전체 튜터 조회 API",description = "전체 튜터 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
+    @Operation(summary = "튜터 둘러보기",description = "전체 튜터 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
     @GetMapping
     @Parameters({
             @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지"),
@@ -69,6 +69,7 @@ public class TutorController {
             @Parameter(name = "minPrice", description = "가격 필터의 하한가"),
             @Parameter(name = "maxPrice", description = "가격 필터의 상한가"),
             @Parameter(name = "gender", description = "필터를 적용할 성별, 남성/여성 중 입력해주세요."),
+            @Parameter(name = "sort", description = "정렬기준, 가격순/평점순/최신순 중 입력해주세요. 입력하지 않을 시, 기본은 최신순입니다."),
     })
     public DataResponseDto<TutorResponseDto.TutorPreviewListDto> getAllTutorList(
             @RequestParam(name = "page") Integer page,
@@ -76,9 +77,11 @@ public class TutorController {
             @RequestParam(required = false) String area,
             @RequestParam(required = false) Long minPrice,
             @RequestParam(required = false) Long maxPrice,
-            @RequestParam(required = false) String gender) {
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) String sort) {
         Gender enumGender = Gender.toGender(gender);
-        Page<Tutor> response = tutorService.getTutorList(page-1,sportsId,area,minPrice,maxPrice,enumGender);
-        return DataResponseDto.of(tutorConverter.toTutorPreviewListDto(response),"전체 튜터 목록을 조회했습니다.");
+        Page<Tutor> response = tutorService.getTutorList(page-1,sportsId,area,minPrice,maxPrice,enumGender,sort);
+        TutorResponseDto.TutorPreviewListDto responseList = tutorConverter.toTutorPreviewListDto(response);
+        return DataResponseDto.of(responseList,"전체 튜터 목록을 조회했습니다.");
     }
 }
