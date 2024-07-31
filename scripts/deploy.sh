@@ -10,7 +10,7 @@ echo "> 프로젝트 build 시작"
 
 echo "> 홈 디렉토리로 이동"
 cd $REPOSITORY
-정
+
 echo "> Build 파일 복사"
 cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/  #5
 
