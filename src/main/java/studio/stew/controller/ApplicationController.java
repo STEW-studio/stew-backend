@@ -71,13 +71,12 @@ public class ApplicationController {
         return DataResponseDto.of(responseDto, "받은 신청서 목록입니다.");
     }
 
-    @GetMapping("/apps/delete/{userId}")
+    @GetMapping("/apps/delete/{appId}")
     public DataResponseDto<ApplicationResponseDto.ApplicationCreateResponseDto> applicationDelete(
-            @PathVariable Long userId) {
-        Application application = applicationService.getApplication(userId);
+            @PathVariable Long appId) {
+        Application application = applicationService.getApplication(appId);
 
-        Long applicationId = application.getApplicationId();
-        ApplicationResponseDto.ApplicationCreateResponseDto responseDto = ApplicationConverter.toApplicationCreateResponseDto(applicationId);
+        ApplicationResponseDto.ApplicationCreateResponseDto responseDto = ApplicationConverter.toApplicationCreateResponseDto(appId);
 
         applicationService.delete(application);
 
