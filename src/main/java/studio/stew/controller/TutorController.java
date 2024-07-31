@@ -69,7 +69,7 @@ public class TutorController {
             @Parameter(name = "minPrice", description = "가격 필터의 하한가"),
             @Parameter(name = "maxPrice", description = "가격 필터의 상한가"),
             @Parameter(name = "gender", description = "필터를 적용할 성별, 남성/여성 중 입력해주세요."),
-            @Parameter(name = "sort", description = "정렬기준, 가격순/평점순/최신순 중 입력해주세요. 입력하지 않을 시, 기본은 최신순입니다."),
+            @Parameter(name = "sort", description = "정렬기준, 낮은가격순/높은가격순/낮은평점순/높은평점순/최신순 중 입력해주세요. 입력하지 않을 시, 기본은 최신순입니다."),
     })
     public DataResponseDto<TutorResponseDto.TutorPreviewListDto> getAllTutorList(
             @RequestParam(name = "page") Integer page,

@@ -159,11 +159,17 @@ public class TutorService {
         //default: 최신순 정렬
         Sort sort = Sort.by(Sort.Direction.DESC,"createdAt");;
         if(sortOption != null) {
-            if(sortOption.equals("가격순")) {
+            if(sortOption.equals("높은가격순")) {
                 sort = Sort.by(Sort.Direction.DESC, "price");
             }
-            else if(sortOption.equals("평점순")) {
+            else if(sortOption.equals("낮은가격순")) {
+                sort = Sort.by(Sort.Direction.ASC, "price");
+            }
+            else if(sortOption.equals("높은평점순")) {
                 sort = Sort.by(Sort.Direction.DESC, "score");
+            }
+            else if(sortOption.equals("낮은평점순")) {
+                sort = Sort.by(Sort.Direction.ASC, "score");
             }
         }
         return tutorRepository.findAll(spec, PageRequest.of(page, 9,sort));

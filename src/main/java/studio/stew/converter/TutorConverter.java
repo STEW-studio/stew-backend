@@ -132,7 +132,13 @@ public class TutorConverter {
         if(reviewRepository.countAllByTutor(tutor) != 0){
             totalScore = reviewRepository.sumAllScoreByTutor(tutor.getTutorId());
         }
-        return totalScore/countReviews(tutor);
+        Integer reviewCount = countReviews(tutor);
+        if(reviewCount == 0) {
+            return 0.0f;
+        }
+        else {
+            return totalScore/countReviews(tutor);
+        }
     }
     public Integer countReviews (Tutor tutor) {
         Integer countReviews = reviewRepository.countAllByTutor(tutor);
