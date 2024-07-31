@@ -65,14 +65,18 @@ public class TutorService {
         if (requestDto.getSelfIntro() != null) {tutor.setSelf_intro(requestDto.getSelfIntro());}
         if (requestDto.getSportsIntro() != null) {tutor.setSports_intro(requestDto.getSportsIntro());}
         if (newProfile != null) {
-            String imgUrl = tutor.getImgUrl();
-            int lastSlashIndex = imgUrl.lastIndexOf('/');
-            String filename = imgUrl.substring(lastSlashIndex+1);
-            awsS3Service.deleteFile(filename);
+            if(tutor.getImgUrl() != null){
+                String imgUrl = tutor.getImgUrl();
+                int lastSlashIndex = imgUrl.lastIndexOf('/');
+                String filename = imgUrl.substring(lastSlashIndex+1);
+                awsS3Service.deleteFile(filename);
+            }
             String newProfileUrl = awsS3Service.uploadFile(newProfile);
             tutor.setImgUrl(newProfileUrl);
         }
-        uploadPortfolio(newPortfolio, tutor, true);
+        if(newPortfolio != null) {
+            uploadPortfolio(newPortfolio, tutor, true);
+        }
         tutorRepository.save(tutor);
         return tutor.getTutorId();
     }
@@ -165,7 +169,7 @@ public class TutorService {
 
         //정렬
         //default: 최신순 정렬
-        Sort sort = Sort.by(Sort.Direction.DESC,"createdAt");;
+        Sort sort = Sort.by(Sort.Direction.DESC,"createdAt");
         if(sortOption != null) {
             if(sortOption.equals("높은가격순")) {
                 sort = Sort.by(Sort.Direction.DESC, "price");

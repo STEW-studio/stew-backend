@@ -20,6 +20,7 @@ public class TutorConverter {
     private final ReviewRepository reviewRepository;
     public static Tutor toTutor(User user, TutorRequestDto.TutorCreateRequestDto requestDto, Sports sports, String imgUrl) {
         return Tutor.builder()
+                .score(0f)
                 .price(requestDto.getPrice())
                 .user(user)
                 .name(requestDto.getName())
@@ -172,6 +173,7 @@ public class TutorConverter {
         Integer reviewCount = countReviews(tutor);
 
         return TutorResponseDto.TutorPreviewDto.builder()
+                .tutorId(tutor.getTutorId())
                 .imgUrl(tutor.getImgUrl())
                 .name(tutor.getName())
                 .sportName(tutor.getSports().getName())
