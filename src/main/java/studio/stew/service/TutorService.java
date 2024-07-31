@@ -106,13 +106,19 @@ public class TutorService {
         Tutor tutor = tutorRepository.findById(tutorId)
                 .orElseThrow(() -> new EntityNotFoundException("튜터가 없습니다."));
         List<String> portfolio = portfolioRepository.findAllImgUrlByTutor(tutor);
-        Review review = reviewRepository.findTopByTutorOrderByCreatedAtDesc(tutor);
-        User reviewer = userRepository.findById(review.getUser().getUserId())
-                .orElseThrow(()->new EntityNotFoundException("유저가 없습니다."));
-        TutorResponseDto.TutorReviewDto reviewDto = TutorConverter.toTutorReviewDto(reviewer, review);
         Float totalScore = calculateScore(tutor);
         Integer reviewCount = countReviews(tutor);
-        TutorResponseDto.TutorDetailDto response = TutorConverter.toTutorDetailDto(tutor, portfolio, reviewDto, totalScore, reviewCount);
+        TutorResponseDto.TutorDetailDto response;
+        if(reviewCount <= 0) {
+            response = TutorConverter.toTutorDetailDto(tutor, portfolio, totalScore, reviewCount);
+        }
+        else {
+            Review review = reviewRepository.findTopByTutorOrderByCreatedAtDesc(tutor);
+            User reviewer = userRepository.findById(review.getUser().getUserId())
+                    .orElseThrow(()->new EntityNotFoundException("유저가 없습니다."));
+            TutorResponseDto.TutorReviewDto reviewDto = TutorConverter.toTutorReviewDto(reviewer, review);
+            response = TutorConverter.toTutorDetailDto(tutor, portfolio, reviewDto, totalScore, reviewCount);
+        }
         return response;
     }
     public List<TutorResponseDto.TodayTutorDto> todayTutorService() {

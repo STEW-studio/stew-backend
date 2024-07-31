@@ -18,7 +18,7 @@ import studio.stew.service.UserService;
 public class UserController {
     private final UserService userService;
     private final TutorConverter tutorConverter;
-    @Operation(summary = "특정 유저의 튜터 목록 조회 API",description = "특정 유저의 튜터 목록을 조회하는 API이며, 페이징을 포함합니다. query String 으로 page 번호를 주세요")
+    @Operation(summary = "특정 유저의 튜터 목록 조회 API",description = "특정 유저의 튜터 목록을 조회하는 API이며, 페이징을 포함합니다. path variable로 userId를, query String으로 page 번호를 주세요")
     @GetMapping("/{userId}/tutors")
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디, path variable 입니다!"),
