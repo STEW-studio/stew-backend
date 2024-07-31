@@ -16,11 +16,16 @@ public enum Gender {
     }
     @JsonCreator
     public static Gender toGender(String value) {
-        for (Gender gender : Gender.values()) {
-            if (gender.viewName.equals(value)) {
-                return gender;
-            }
+        if (value == null) {
+            return null;
         }
-        throw new IllegalArgumentException("Invalid gender: " + value);
+        else {
+            for (Gender gender : Gender.values()) {
+                if (gender.viewName.equals(value)) {
+                    return gender;
+                }
+            }
+            throw new IllegalArgumentException("Invalid gender: " + value);
+        }
     }
 }

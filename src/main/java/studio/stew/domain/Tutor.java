@@ -39,6 +39,8 @@ public class Tutor extends BaseEntity {
     private String self_intro;
     @Column(nullable = false)
     private String sports_intro;
+    @Column(nullable = false)
+    private Float score;
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
     private List<Application> applicationList = new ArrayList<>();
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
@@ -52,4 +54,8 @@ public class Tutor extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sports_id")
     private Sports sports;
+
+    public void setScore(Float score) {
+        this.score = score;
+    }
 }

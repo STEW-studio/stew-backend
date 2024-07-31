@@ -48,6 +48,7 @@ public class TutorConverter {
     }
     public static TutorResponseDto.TutorPreviewDto toTutorPreviewDto(Float score, Integer reviewCount, Tutor tutor) {
         return TutorResponseDto.TutorPreviewDto.builder()
+                .tutorId(tutor.getTutorId())
                 .price(tutor.getPrice())
                 .intro(tutor.getIntro())
                 .career(tutor.getCareer())
@@ -84,6 +85,7 @@ public class TutorConverter {
              Float totalScore,
              Integer reviewCount) {
         return TutorResponseDto.TutorDetailDto.builder()
+                .tutorId(tutor.getTutorId())
                 .age(tutor.getAge())
                 .career(tutor.getCareer())
                 .portfolio(portfolio)
@@ -128,7 +130,13 @@ public class TutorConverter {
         if(reviewRepository.countAllByTutor(tutor) != 0){
             totalScore = reviewRepository.sumAllScoreByTutor(tutor.getTutorId());
         }
-        return totalScore/countReviews(tutor);
+        Integer reviewCount = countReviews(tutor);
+        if(reviewCount == 0) {
+            return 0.0f;
+        }
+        else {
+            return totalScore/countReviews(tutor);
+        }
     }
     public Integer countReviews (Tutor tutor) {
         Integer countReviews = reviewRepository.countAllByTutor(tutor);
