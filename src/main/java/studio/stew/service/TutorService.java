@@ -17,6 +17,7 @@ import studio.stew.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class TutorService {
     private final AwsS3Service awsS3Service;
     private final PortfolioRepository portfolioRepository;
     private final ReviewRepository reviewRepository;
+    private final TutorConverter tutorConverter;
     public Long createTutor(Long userId, TutorRequestDto.TutorCreateRequestDto requestDto, List<MultipartFile> portfolio, MultipartFile profile) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. ID: " + userId));
@@ -158,6 +160,17 @@ public class TutorService {
     public Integer countReviews (Tutor tutor) {
         Integer countReviews = reviewRepository.countAllByTutor(tutor);
         return countReviews;
+    }
+
+    public List<TutorResponseDto.TutorPreviewDto> getRandomTutorsBySports(Long sportsId1, Long sportsId2) {
+        Random random = new Random();
+        List<Tutor> tutors1 = tutorRepository.findBySports_SportsId(sportsId1);
+        List<Tutor> tutors2 = tutorRepository.findBySports_SportsId(sportsId2);
+
+        Tutor randomTutor1 = tutors1.get(random.nextInt(tutors1.size()));
+        Tutor randomTutor2 = tutors2.get(random.nextInt(tutors2.size()));
+
+        return List.of(tutorConverter.toTutorResponseDto(randomTutor1), tutorConverter.toTutorResponseDto(randomTutor2));
     }
 }
 

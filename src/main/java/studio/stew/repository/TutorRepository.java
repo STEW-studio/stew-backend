@@ -20,4 +20,5 @@ public interface TutorRepository extends JpaRepository<Tutor, Long>, JpaSpecific
             "ORDER BY COUNT(a) DESC")
     List<Tutor> findTodayTutors(Pageable pageable);
     List<Tutor> findByUser(User user);
+    List<Tutor> findBySports_SportsId(Long sportsId);
 }
