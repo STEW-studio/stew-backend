@@ -173,6 +173,7 @@ public class TutorConverter {
         Integer reviewCount = countReviews(tutor);
 
         return TutorResponseDto.TutorPreviewDto.builder()
+                .tutorId(tutor.getTutorId())
                 .imgUrl(tutor.getImgUrl())
                 .name(tutor.getName())
                 .sportName(tutor.getSports().getName())
