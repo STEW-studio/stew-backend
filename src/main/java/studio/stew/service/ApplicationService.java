@@ -76,9 +76,9 @@ public class ApplicationService {
         return applicationRepository.findByTutor(tutor);
     }
 
-    public Application getApplication(Long userId){
-        Optional<Application> application = this.applicationRepository.findById(userId);
-        return application.get();
+    public Application getApplication(Long appId){
+        return applicationRepository.findById(appId)
+                .orElseThrow(() -> new EntityNotFoundException("신청서를 찾을 수 없습니다. ID: " + appId));
     }
 
     public void delete(Application application){
