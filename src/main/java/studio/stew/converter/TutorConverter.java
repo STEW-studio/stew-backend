@@ -103,6 +103,30 @@ public class TutorConverter {
                 .reviewDto(reviewDto)
                 .build();
     }
+    public static TutorResponseDto.TutorDetailDto toTutorDetailDto
+            (Tutor tutor,
+             List<String> portfolio,
+             Float totalScore,
+             Integer reviewCount) {
+        return TutorResponseDto.TutorDetailDto.builder()
+                .tutorId(tutor.getTutorId())
+                .age(tutor.getAge())
+                .career(tutor.getCareer())
+                .portfolio(portfolio)
+                .intro(tutor.getIntro())
+                .price(tutor.getPrice())
+                .imgUrl(tutor.getImgUrl())
+                .location(tutor.getLocation())
+                .selfIntro(tutor.getSelf_intro())
+                .sportsId(tutor.getSports().getSportsId())
+                .gender(tutor.getGender())
+                .name(tutor.getName())
+                .sportsIntro(tutor.getSports_intro())
+                .totalScore(totalScore)
+                .reviewCount(reviewCount)
+                .reviewDto(null)
+                .build();
+    }
     public static TutorResponseDto.TutorReviewDto toTutorReviewDto(User reviewer, Review review) {
         return TutorResponseDto.TutorReviewDto.builder()
                 .reviewAge(reviewer.getAge())
