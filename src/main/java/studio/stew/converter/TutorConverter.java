@@ -50,6 +50,7 @@ public class TutorConverter {
     }
     public static TutorResponseDto.TutorPreviewDto toTutorPreviewDto(Float score, Integer reviewCount, Tutor tutor) {
         return TutorResponseDto.TutorPreviewDto.builder()
+                .tutorId(tutor.getTutorId())
                 .price(tutor.getPrice())
                 .intro(tutor.getIntro())
                 .career(tutor.getCareer())
@@ -86,6 +87,7 @@ public class TutorConverter {
              Float totalScore,
              Integer reviewCount) {
         return TutorResponseDto.TutorDetailDto.builder()
+                .tutorId(tutor.getTutorId())
                 .age(tutor.getAge())
                 .career(tutor.getCareer())
                 .portfolio(portfolio)

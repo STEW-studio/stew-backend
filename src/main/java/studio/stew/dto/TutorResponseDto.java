@@ -45,6 +45,7 @@ public class TutorResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TutorPreviewDto {
+        Long tutorId;
         String imgUrl;
         String name;
         String sportName;
@@ -60,6 +61,7 @@ public class TutorResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TutorDetailDto {
+        Long tutorId;
         String imgUrl;
         String name;
         Gender gender;
