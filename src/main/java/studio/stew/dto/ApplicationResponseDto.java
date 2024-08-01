@@ -51,9 +51,9 @@ public class ApplicationResponseDto {
         LocalDateTime createdAt;
     }
 
-    @Getter
-    @Setter
     @Builder
+    @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class ApplicationReceivedResponseDto {
         private List<TutorProfileDto> tutorProfiles;
@@ -64,9 +64,10 @@ public class ApplicationResponseDto {
         private boolean isLast;
     }
 
-    @Getter
-    @Setter
     @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class TutorProfileDto {
         @JsonProperty("img_url")
         private String imgUrl;
@@ -79,14 +80,23 @@ public class ApplicationResponseDto {
         private List<ApplicationInfoDto> applicationList;
     }
 
-    @Getter
-    @Setter
     @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ApplicationInfoDto {
         @JsonProperty("user_name")
         private String userName;
         private String title;
         private boolean status;
         private LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ApplicationStatusUpdateDto{
+        boolean status;
     }
 }

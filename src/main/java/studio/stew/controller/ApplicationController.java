@@ -71,7 +71,7 @@ public class ApplicationController {
         return DataResponseDto.of(responseDto, "받은 신청서 목록입니다.");
     }
 
-    @GetMapping("/apps/delete/{appId}")
+    @DeleteMapping("/apps/delete/{appId}")
     public DataResponseDto<ApplicationResponseDto.ApplicationCreateResponseDto> applicationDelete(
             @PathVariable Long appId) {
         Application application = applicationService.getApplication(appId);
@@ -81,5 +81,14 @@ public class ApplicationController {
         applicationService.delete(application);
 
         return DataResponseDto.of(responseDto, "신청서를 삭제했습니다.");
+    }
+
+    @PatchMapping("/apps/patch/{appId}")
+    public DataResponseDto<ApplicationResponseDto.ApplicationStatusUpdateDto> applicationStatusUpdate(
+            @PathVariable Long appId){
+        applicationService.updateStatus(appId);
+
+        ApplicationResponseDto.ApplicationStatusUpdateDto responseDto = ApplicationConverter.toApplicationStatusUpdateDto();
+        return DataResponseDto.of(responseDto, "신청서의 상태를 수락으로 설정했습니다.");
     }
 }
