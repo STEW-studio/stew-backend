@@ -24,6 +24,6 @@ public class TestController {
             @RequestParam Long sportsId2) {
 
         List<TutorResponseDto.TutorPreviewDto> tutorList = tutorService.getRandomTutorsBySports(sportsId1, sportsId2);
-        return DataResponseDto.of(tutorList, "전체 튜터 목록을 조회했습니다.");
+        return DataResponseDto.of(tutorList, "2개의 튜터 프로필을 조회했습니다.");
     }
 }
