@@ -90,4 +90,12 @@ public class ApplicationService {
                 .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
         return tutorRepository.findByUser(user);
     }
+
+    public void updateStatus(Long appId) {
+        Application application = applicationRepository.findById(appId)
+                .orElseThrow(() -> new EntityNotFoundException("신청서를 찾을 수 없습니다. ID: " + appId));
+
+        application.setStatus(true);
+        applicationRepository.save(application);
+    }
 }

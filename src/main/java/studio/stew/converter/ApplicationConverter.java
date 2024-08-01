@@ -16,6 +16,12 @@ public class ApplicationConverter {
                 .build();
     }
 
+    public static ApplicationResponseDto.ApplicationStatusUpdateDto toApplicationStatusUpdateDto() {
+        return ApplicationResponseDto.ApplicationStatusUpdateDto.builder()
+                .status(true)
+                .build();
+    }
+
     public static ApplicationResponseDto.ApplicationSentResponseDto toApplicationSentResponseDto(Application application) {
         return ApplicationResponseDto.ApplicationSentResponseDto.builder()
                 .imgUrl(application.getTutor().getImgUrl()) // 튜터 imgurl 가져와야함
