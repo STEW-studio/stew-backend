@@ -15,7 +15,6 @@ public class ApplicationRequestDto {
         @NotNull
         private String title;
 
-        @NotNull
         private MultipartFile imgUrl;
 
         @NotNull
