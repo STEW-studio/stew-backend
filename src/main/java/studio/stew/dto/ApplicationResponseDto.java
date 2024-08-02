@@ -2,6 +2,7 @@ package studio.stew.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import studio.stew.domain.enums.Gender;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,6 +50,9 @@ public class ApplicationResponseDto {
 
         @JsonProperty("created_at")
         LocalDateTime createdAt;
+
+        @JsonProperty("application_id")
+        Long applicationId;
     }
 
     @Builder
@@ -90,6 +94,9 @@ public class ApplicationResponseDto {
         private String title;
         private boolean status;
         private LocalDateTime createdAt;
+
+        @JsonProperty("application_id")
+        private Long applicationId;
     }
 
     @Builder
@@ -98,5 +105,35 @@ public class ApplicationResponseDto {
     @AllArgsConstructor
     public static class ApplicationStatusUpdateDto{
         boolean status;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ApplicationDetailDto{
+//        @JsonProperty("tutor_id")
+//        Long tutorId;
+        @JsonProperty("tutor_img")
+        String tutorImg;
+        @JsonProperty("tutor_name")
+        String tutorName;
+        @JsonProperty("sport_name")
+        String sportName;
+        String intro;
+        Float score;
+        Integer reviewCount;
+        Long price;
+
+        @JsonProperty("user_img")
+        String userImg;
+        String title;
+        String userName;
+        Gender gender;
+        Integer age;
+        String location;
+        List<String> purpose;
+        int intensity;
+        String memo;
     }
 }

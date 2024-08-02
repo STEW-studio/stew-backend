@@ -25,6 +25,7 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
     private final AwsS3Service awsS3Service;
+    private final ApplicationConverter applicationConverter;
 
     @PostMapping(value = "/apps/{userId}/{tutorId}", consumes = "multipart/form-data")
     public DataResponseDto<ApplicationResponseDto.ApplicationCreateResponseDto> applicationCreate(
@@ -90,5 +91,14 @@ public class ApplicationController {
 
         ApplicationResponseDto.ApplicationStatusUpdateDto responseDto = ApplicationConverter.toApplicationStatusUpdateDto();
         return DataResponseDto.of(responseDto, "신청서의 상태를 수락으로 설정했습니다.");
+    }
+
+    @GetMapping("/apps/detail/{appId}")
+    public DataResponseDto<ApplicationResponseDto.ApplicationDetailDto> applicationDetail(
+            @PathVariable Long appId) {
+        Application application = applicationService.getApplication(appId);
+
+        ApplicationResponseDto.ApplicationDetailDto responseDto = applicationConverter.toapplicationDetailDto(application);
+        return DataResponseDto.of(responseDto, "신청서의 상세 사항입니다.");
     }
 }

@@ -1,15 +1,21 @@
 package studio.stew.converter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 import studio.stew.domain.Application;
 import studio.stew.domain.Tutor;
 import studio.stew.dto.ApplicationResponseDto;
+import studio.stew.repository.ReviewRepository;
 import studio.stew.service.ApplicationService;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
+@RequiredArgsConstructor
 public class ApplicationConverter {
+    private final ReviewRepository reviewRepository;
+
     public static ApplicationResponseDto.ApplicationCreateResponseDto toApplicationCreateResponseDto(Long applicationId) {
         return ApplicationResponseDto.ApplicationCreateResponseDto.builder()
                 .applicationId(applicationId)
@@ -30,6 +36,7 @@ public class ApplicationConverter {
                 .title(application.getTitle())
                 .status(application.isStatus())
                 .createdAt(application.getCreatedAt())
+                .applicationId(application.getApplicationId())
                 .build();
     }
 
@@ -54,6 +61,7 @@ public class ApplicationConverter {
                 .title(application.getTitle())
                 .status(application.isStatus())
                 .createdAt(application.getCreatedAt())
+                .applicationId(application.getApplicationId())
                 .build();
     }
 
@@ -74,5 +82,47 @@ public class ApplicationConverter {
         return tutors.stream()
                 .map(tutor -> toTutorProfileDto(tutor, applicationService.getReceivedApplicationsByTutor(tutor)))
                 .collect(Collectors.toList());
+    }
+
+    public Float calculateScore (Tutor tutor) {
+        Float totalScore = 0.0f;
+        if(reviewRepository.countAllByTutor(tutor) != 0){
+            totalScore = reviewRepository.sumAllScoreByTutor(tutor.getTutorId());
+        }
+        Integer reviewCount = countReviews(tutor);
+        if(reviewCount == 0) {
+            return 0.0f;
+        }
+        else {
+            return totalScore/countReviews(tutor);
+        }
+    }
+    public Integer countReviews (Tutor tutor) {
+        Integer countReviews = reviewRepository.countAllByTutor(tutor);
+        return countReviews;
+    }
+
+    public ApplicationResponseDto.ApplicationDetailDto toapplicationDetailDto(Application application) {
+        Tutor tutor = application.getTutor();
+        Float score = calculateScore(tutor);
+        Integer reviewCount = countReviews(tutor);
+
+        return ApplicationResponseDto.ApplicationDetailDto.builder()
+                .tutorImg(tutor.getImgUrl())
+                .tutorName(tutor.getName())
+                .sportName(tutor.getSports().getName())
+                .intro(tutor.getIntro())
+                .score(score)
+                .reviewCount(reviewCount)
+                .price(tutor.getPrice())
+                .userImg(application.getImgUrl())
+                .title(application.getTitle())
+                .userName(application.getUser().getName())
+                .gender(application.getUser().getGender())
+                .location(application.getUser().getLocation())
+                .purpose(application.getPurpose())
+                .intensity(application.getIntensity())
+                .memo(application.getMemo())
+                .build();
     }
 }
