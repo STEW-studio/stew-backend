@@ -67,8 +67,7 @@ public class TutorResponseDto {
         Gender gender;
         Integer age;
         String location;
-        @JsonProperty("sports_id")
-        Long sportsId;
+        String sportName;
         Long price;
         String career;
         String intro;
