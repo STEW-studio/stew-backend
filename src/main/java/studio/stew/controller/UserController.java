@@ -7,8 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import studio.stew.converter.TutorConverter;
+import studio.stew.converter.UserConverter;
 import studio.stew.domain.Tutor;
+import studio.stew.domain.User;
 import studio.stew.dto.TutorResponseDto;
+import studio.stew.dto.UserResponseDto;
 import studio.stew.response.DataResponseDto;
 import studio.stew.service.UserService;
 
@@ -29,5 +32,14 @@ public class UserController {
             @RequestParam(name = "page") Integer page) {
         Page<Tutor> response = userService.getTutorList(userId, page-1);
         return DataResponseDto.of(tutorConverter.toTutorPreviewListDto(response),"유저가 등록한 튜터 목록을 조회했습니다.");
+    }
+
+    @GetMapping("/{userId}")
+    public DataResponseDto<UserResponseDto.UserInfoDto> getUserInfo(
+            @PathVariable Long userId){
+        User user = userService.getUserById(userId);
+
+        UserResponseDto.UserInfoDto responseDto = UserConverter.toUserDto(user);
+        return DataResponseDto.of(responseDto, "유저 정보를 조회했습니다.");
     }
 }
