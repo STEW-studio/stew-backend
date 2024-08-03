@@ -21,4 +21,9 @@ public class UserService {
         Page<Tutor> TutorPage = tutorRepository.findAllByUser(user, PageRequest.of(page, 9));
         return TutorPage;
     }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
+    }
 }
