@@ -130,7 +130,7 @@ public class ApplicationResponseDto {
         String title;
         String userName;
         Gender gender;
-        Integer age;
+        Long age;
         String location;
         List<String> purpose;
         int intensity;

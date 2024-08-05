@@ -119,6 +119,7 @@ public class ApplicationConverter {
                 .title(application.getTitle())
                 .userName(application.getUser().getName())
                 .gender(application.getUser().getGender())
+                .age(application.getUser().getAge())
                 .location(application.getUser().getLocation())
                 .purpose(application.getPurpose())
                 .intensity(application.getIntensity())
