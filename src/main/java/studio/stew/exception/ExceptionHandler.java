@@ -1,6 +1,7 @@
 package studio.stew.exception;
 
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import studio.stew.response.Code;
 import studio.stew.response.ErrorResponseDto;
 
 @RestControllerAdvice(annotations = {RestController.class})
+@Slf4j
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler
@@ -21,11 +23,13 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     public ResponseEntity<Object> general(GeneralException e, WebRequest request) {
+        log.warn(e.getMessage());
         return handleExceptionInternal(e, e.getErrorCode(), request);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
+        log.warn(e.getMessage());
         return handleExceptionInternal(e, Code.INTERNAL_ERROR, request);
     }
 
