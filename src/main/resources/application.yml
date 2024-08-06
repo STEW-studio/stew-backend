@@ -18,6 +18,7 @@ spring:
           auto: update
         default_batch_fetch_size: 1000
 
+
 cloud:
   aws:
     s3:

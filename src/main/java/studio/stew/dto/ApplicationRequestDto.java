@@ -24,6 +24,7 @@ public class ApplicationRequestDto {
         private int intensity;
 
         @NotNull
+
         private String memo;
 
     }
