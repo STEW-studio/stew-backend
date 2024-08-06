@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 import studio.stew.domain.enums.Gender;
-
-import java.util.List;
 
 public class TutorRequestDto {
     @Getter
@@ -36,11 +33,6 @@ public class TutorRequestDto {
         @NotNull
         @JsonProperty("sports_intro")
         String sportsIntro;
-
-        @NotNull
-        List<MultipartFile> portfolio;
-
-        MultipartFile profile;
 
     }
     @Getter
