@@ -1,6 +1,5 @@
 package studio.stew.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,18 +12,15 @@ public class TutorRequestDto {
     @Setter
     public static class TutorCreateRequestDto {
         String name;
-        Gender gender;
+        String gender;
         Integer age;
         String location;
-        @JsonProperty("sports_id")
-        Long sportsId;
+        Long sportsid;
         Long price;
         String career;
         String intro;
-        @JsonProperty("self_intro")
-        String selfIntro;
-        @JsonProperty("sports_intro")
-        String sportsIntro;
+        String selfintro;
+        String sportsintro;
         MultipartFile profile;
         List<MultipartFile> portfolio;
 
@@ -36,7 +32,6 @@ public class TutorRequestDto {
         Integer age;
         String location;
 
-        @JsonProperty("sports_id")
         Long sportsId;
 
         Long price;
@@ -45,10 +40,8 @@ public class TutorRequestDto {
 
         String intro;
 
-        @JsonProperty("self_intro")
         String selfIntro;
 
-        @JsonProperty("sports_intro")
         String sportsIntro;
     }
 }

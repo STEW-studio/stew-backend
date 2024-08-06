@@ -7,6 +7,7 @@ import studio.stew.domain.Review;
 import studio.stew.domain.Sports;
 import studio.stew.domain.Tutor;
 import studio.stew.domain.User;
+import studio.stew.domain.enums.Gender;
 import studio.stew.dto.TutorRequestDto;
 import studio.stew.dto.TutorResponseDto;
 import studio.stew.repository.ReviewRepository;
@@ -25,9 +26,9 @@ public class TutorConverter {
                 .user(user)
                 .name(requestDto.getName())
                 .sports(sports)
-                .sports_intro(requestDto.getSportsIntro())
-                .gender(requestDto.getGender())
-                .self_intro(requestDto.getSelfIntro())
+                .sports_intro(requestDto.getSportsintro())
+                .gender(Gender.toGender(requestDto.getGender()))
+                .self_intro(requestDto.getIntro())
                 .intro(requestDto.getIntro())
                 .career(requestDto.getCareer())
                 .age(requestDto.getAge())

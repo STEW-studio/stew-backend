@@ -32,8 +32,8 @@ public class TutorService {
     private final TutorConverter tutorConverter;
     public Long createTutor(Long userId, TutorRequestDto.TutorCreateRequestDto requestDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. ID: " + userId));
-        Sports sports = sportsRepository.findById(requestDto.getSportsId())
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+        Sports sports = sportsRepository.findById(requestDto.getSportsid())
                 .orElseThrow(()-> new EntityNotFoundException("종목을 찾을 수 없습니다."));
         String profileUrl = null;
         if (requestDto.getProfile() != null && !requestDto.getProfile().isEmpty()) {
