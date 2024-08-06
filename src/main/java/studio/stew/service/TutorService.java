@@ -30,19 +30,19 @@ public class TutorService {
     private final PortfolioRepository portfolioRepository;
     private final ReviewRepository reviewRepository;
     private final TutorConverter tutorConverter;
-    public Long createTutor(Long userId, TutorRequestDto.TutorCreateRequestDto requestDto, List<MultipartFile> portfolio, MultipartFile profile) {
+    public Long createTutor(Long userId, TutorRequestDto.TutorCreateRequestDto requestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다. ID: " + userId));
         Sports sports = sportsRepository.findById(requestDto.getSportsId())
                 .orElseThrow(()-> new EntityNotFoundException("종목을 찾을 수 없습니다."));
         String profileUrl = null;
-        if (profile != null && !profile.isEmpty()) {
-            profileUrl = awsS3Service.uploadFile(profile);
+        if (requestDto.getProfile() != null && !requestDto.getProfile().isEmpty()) {
+            profileUrl = awsS3Service.uploadFile(requestDto.getProfile());
         }
         Tutor tutor = TutorConverter.toTutor(user, requestDto, sports, profileUrl);
         Tutor newTutor = tutorRepository.save(tutor);
-        if (portfolio != null && !portfolio.isEmpty()) {
-            uploadPortfolio(portfolio, newTutor, false);
+        if (requestDto.getPortfolio() != null && !requestDto.getPortfolio().isEmpty()) {
+            uploadPortfolio(requestDto.getPortfolio(), newTutor, false);
         }
 
         return newTutor.getTutorId();

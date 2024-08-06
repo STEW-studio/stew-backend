@@ -3,6 +3,7 @@ package studio.stew.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,9 @@ public class TutorController {
     @Operation(summary = "튜터 등록",description = "튜터를 등록하는 API입니다. path variable로 userId를 주세요.")
     @PostMapping(value = "/{userId}", consumes = "multipart/form-data")
     public DataResponseDto<TutorResponseDto.TutorCreateResponseDto> createTutor(
-            @RequestPart TutorRequestDto.TutorCreateRequestDto requestDto,
-            @ModelAttribute List<MultipartFile> portfolio,
-            @PathVariable(name="userId") Long userId,
-            @ModelAttribute MultipartFile profile) {
-        Long tutorId = tutorService.createTutor(userId, requestDto, portfolio, profile);
+            @ModelAttribute @Valid TutorRequestDto.TutorCreateRequestDto requestDto,
+            @PathVariable(name="userId") Long userId) {
+        Long tutorId = tutorService.createTutor(userId, requestDto);
         TutorResponseDto.TutorCreateResponseDto responseDto = TutorConverter.toTutorCreateResponseDto(tutorId);
         return DataResponseDto.of(responseDto, "튜터가 생성되었습니다.");
     }
