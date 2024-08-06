@@ -2,10 +2,8 @@ package studio.stew.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 import studio.stew.domain.enums.Gender;
 
-import java.util.List;
 
 public class TutorRequestDto {
     @Getter
@@ -21,8 +19,6 @@ public class TutorRequestDto {
         String intro;
         String selfintro;
         String sportsintro;
-        MultipartFile profile;
-        List<MultipartFile> portfolio;
 
     }
     @Getter
