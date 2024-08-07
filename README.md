@@ -1,5 +1,7 @@
 <img width="139" alt="image" src="https://github.com/user-attachments/assets/70544320-a067-4e7d-841e-dc80696344e7">
 
+---
+
 ![숭실대학교_2팀_스튜디오 pdf-1](https://github.com/user-attachments/assets/237c4019-800f-4ead-a404-62aa5c237676)
 ![숭실대학교_2팀_스튜디오 pdf-2](https://github.com/user-attachments/assets/c52b0719-a83f-4265-a1be-58a73c727538)
 ![숭실대학교_2팀_스튜디오 pdf-3](https://github.com/user-attachments/assets/e82b241d-d47b-47b1-8195-a1ff9ebd10f8)
