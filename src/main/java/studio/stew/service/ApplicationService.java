@@ -57,19 +57,16 @@ public class ApplicationService {
 
     }
 
-    public Page<Application> getReceivedApplications(Long userId, Pageable pageable) {
+    public Page<Tutor> getReceivedApplications(Long userId, Pageable pageable) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
+
         List<Tutor> tutors = tutorRepository.findByUser(user);
 
-        List<Application> applications = tutors.stream()
-                .flatMap(tutor -> applicationRepository.findByTutor(tutor).stream())
-                .collect(Collectors.toList());
-
         int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), applications.size());
+        int end = Math.min((start + pageable.getPageSize()), tutors.size());
 
-        return new PageImpl<>(applications.subList(start, end), pageable, applications.size());
+        return new PageImpl<>(tutors.subList(start, end), pageable, tutors.size());
     }
 
     public List<Application> getReceivedApplicationsByTutor(Tutor tutor) {

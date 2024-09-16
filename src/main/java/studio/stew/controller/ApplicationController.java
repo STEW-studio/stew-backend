@@ -54,19 +54,19 @@ public class ApplicationController {
     public DataResponseDto<ApplicationResponseDto.ApplicationReceivedResponseDto> getReceivedApplications(
             @PathVariable Long userId,
             @RequestParam(name = "page") Integer page) {
-        PageRequest pageRequest = PageRequest.of(page - 1, 5);
-        Page<Application> applications = applicationService.getReceivedApplications(userId, pageRequest);
+        PageRequest pageRequest = PageRequest.of(page - 1, 2);
+        Page<Tutor> pageTutors = applicationService.getReceivedApplications(userId, pageRequest);
 
-        List<Tutor> tutors = applicationService.getTutorsWithApplications(userId);
+        List<Tutor> tutors = pageTutors.getContent();
         List<ApplicationResponseDto.TutorProfileDto> tutorProfiles = ApplicationConverter.toTutorProfileDtoList(tutors, applicationService);
 
         ApplicationResponseDto.ApplicationReceivedResponseDto responseDto = ApplicationResponseDto.ApplicationReceivedResponseDto.builder()
                 .tutorProfiles(tutorProfiles)
-                .listSize(applications.getSize())
-                .totalPage(applications.getTotalPages())
-                .totalElements(applications.getTotalElements())
-                .isFirst(applications.isFirst())
-                .isLast(applications.isLast())
+                .listSize(pageTutors.getSize())
+                .totalPage(pageTutors.getTotalPages())
+                .totalElements(pageTutors.getTotalElements())
+                .isFirst(pageTutors.isFirst())
+                .isLast(pageTutors.isLast())
                 .build();
 
         return DataResponseDto.of(responseDto, "받은 신청서 목록입니다.");
